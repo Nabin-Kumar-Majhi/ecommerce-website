@@ -1,6 +1,6 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 
 interface NavbarProps {
   cartItemCount: number;
@@ -8,11 +8,18 @@ interface NavbarProps {
 }
 
 const Navbar: FC<NavbarProps> = ({ cartItemCount, toggleCart }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
       section.scrollIntoView({ behavior: "smooth" });
     }
+    setIsMenuOpen(false);
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
 
   return (
@@ -26,7 +33,7 @@ const Navbar: FC<NavbarProps> = ({ cartItemCount, toggleCart }) => {
               className="h-16 w-auto"
             />
           </div>
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-4">
             <Link
               to="/"
               className="text-gray-800 hover:text-gray-600"
@@ -68,7 +75,50 @@ const Navbar: FC<NavbarProps> = ({ cartItemCount, toggleCart }) => {
                 </span>
               )}
             </button>
+            <button
+              onClick={toggleMenu}
+              className="ml-4 lg:hidden text-gray-800 hover:text-gray-600"
+            >
+              {isMenuOpen ? (
+                <FaTimes className="text-2xl" />
+              ) : (
+                <FaBars className="text-2xl" />
+              )}
+            </button>
           </div>
+        </div>
+      </div>
+      {/* Mobile menu */}
+      <div className={`lg:hidden ${isMenuOpen ? "block" : "hidden"}`}>
+        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <Link
+            to="/"
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:text-gray-600 hover:bg-gray-100"
+            onClick={() => scrollToSection("hero")}
+          >
+            Home
+          </Link>
+          <Link
+            to="/"
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:text-gray-600 hover:bg-gray-100"
+            onClick={() => scrollToSection("store")}
+          >
+            Store
+          </Link>
+          <Link
+            to="/"
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:text-gray-600 hover:bg-gray-100"
+            onClick={() => scrollToSection("about")}
+          >
+            About Us
+          </Link>
+          <Link
+            to="/"
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:text-gray-600 hover:bg-gray-100"
+            onClick={() => scrollToSection("contact")}
+          >
+            Contact Us
+          </Link>
         </div>
       </div>
     </nav>
